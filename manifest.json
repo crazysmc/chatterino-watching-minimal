@@ -9,6 +9,9 @@
       "id": "@chatterino-watching-minimal.crazysmc"
     }
   },
+  "icons": {
+    "128": "watching.png"
+  },
 
   "background": {
     "scripts": ["background.js"],
