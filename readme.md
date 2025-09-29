@@ -1,4 +1,4 @@
-# chatterino-watching-minimal
+# Chatterino Watching Minimal
 
 Browser extension with minimal permissions to update the `/watching` split on
 Chatterino.

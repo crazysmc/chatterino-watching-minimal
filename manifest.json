@@ -1,12 +1,15 @@
 {
   "manifest_version": 3,
 
-  "name": "chatterino-watching-minimal",
+  "name": "Chatterino Watching Minimal",
   "version": "1.0",
   "description": "Update the /watching split on Chatterino",
   "browser_specific_settings": {
     "gecko": {
-      "id": "@chatterino-watching-minimal.crazysmc"
+      "id": "@chatterino-watching-minimal.crazysmc",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   },
   "icons": {
