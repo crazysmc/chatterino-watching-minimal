@@ -67,7 +67,7 @@ function activeTwitchTab (url)
   });
 }
 
-async function syncTabs (rmId)
+async function syncTwitchTabs (rmId)
 {
   const tabs = await browser.tabs.query ({ url: manifest.host_permissions });
   const set = new Set ();
@@ -78,31 +78,26 @@ async function syncTabs (rmId)
       if (login)
         set.add (login);
     }
-  if (syncTabs.set.size == set.size && syncTabs.set.isSubsetOf (set))
+  if (syncTwitchTabs.set.size == set.size &&
+      syncTwitchTabs.set.isSubsetOf (set))
     return;
-  syncTabs.set = set;
+  syncTwitchTabs.set = set;
   sendMessage ({
     action: 'sync',
     twitchChannels: [ ...set.values () ],
   });
 }
 
-syncTabs.set = new Set ();
+syncTwitchTabs.set = new Set ();
 
-browser.runtime.onInstalled.addListener (syncTabs);
-browser.runtime.onStartup.addListener (syncTabs);
+browser.runtime.onInstalled.addListener (syncTwitchTabs);
+browser.runtime.onStartup.addListener (syncTwitchTabs);
 
-function changedUrl (tabId, changeInfo, tab)
+function changedTab (tabId, changeInfo, tab)
 {
-  if (tab.active)
+  if (tab.active && changeInfo.url)
     activeTwitchTab (changeInfo.url);
-}
-
-browser.tabs.onUpdated.addListener (changedUrl, { properties: [ 'url' ] });
-
-function changedTab (tabId)
-{
-  syncTabs ();
+  syncTwitchTabs ();
 }
 
 browser.tabs.onUpdated.addListener (changedTab);
@@ -115,7 +110,7 @@ async function activeTab (activeInfo)
 }
 
 browser.tabs.onActivated.addListener (activeTab);
-browser.tabs.onRemoved.addListener (syncTabs);
+browser.tabs.onRemoved.addListener (syncTwitchTabs);
 
 async function changedWindow (windowId)
 {
