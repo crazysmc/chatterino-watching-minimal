@@ -3,8 +3,8 @@
 Browser extension with minimal permissions to update the `/watching` split on
 Chatterino.
 
-Unlike the offical extension
-[chatterino-browser-ext](/Chatterino/chatterino-browser-ext),
+Unlike the
+[offical extension](https://github.com/Chatterino/chatterino-browser-ext),
 this extension does not implement any OS-specific chat replace feature, nor
 does it request the browser permission to read all tabs' URLs.
 Only URLs of `www.twitch.tv` tabs are visible to the extension.
