@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+
+  "name": "chatterino-watching-minimal",
+  "version": "1.0",
+  "description": "Update the /watching split on Chatterino",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@chatterino-watching-minimal.crazysmc"
+    }
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "service_worker": "background.js"
+  },
+  "host_permissions": ["*://www.twitch.tv/*"],
+  "permissions": ["nativeMessaging"]
+}
