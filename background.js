@@ -7,16 +7,31 @@ const appName = 'com.chatterino.chatterino';
 
 function sendMessage (msg)
 {
-  console.debug (msg);
   if (!sendMessage.port)
   {
+    console.log ('CONN', appName);
     sendMessage.port = browser.runtime.connectNative (appName);
-    sendMessage.port.onDisconnect.addListener (sendMessage.disconnect);
+    sendMessage.port.onDisconnect.addListener (disconnected);
+    sendMessage.port.onMessage.addListener (logReceived);
   }
+  console.debug ('SEND', msg);
   sendMessage.port.postMessage (msg);
 }
 
-sendMessage.disconnect = () => { sendMessage.port = null; };
+function disconnected (port)
+{
+  sendMessage.port = null;
+  const err = port.error ?? browser.runtime.lastError;
+  if (err)
+    console.warn ('END', err);
+  else
+    console.log ('END');
+}
+
+function logReceived (data)
+{
+  console.debug ('RECV', data);
+}
 
 function getLoginFromUrl (url)
 {
@@ -28,6 +43,8 @@ function getLoginFromUrl (url)
   {
     case 'moderator':
     case 'popout':
+      if (path[2] == 'moderator')
+        return path[3];
       return path[2];
 
     case '_deck': // ffz extension
@@ -41,6 +58,7 @@ function getLoginFromUrl (url)
     case 'payments':
     case 'prime':
     case 'privacy':
+    case 'search':
     case 'settings':
     case 'store':
     case 'subscriptions':
