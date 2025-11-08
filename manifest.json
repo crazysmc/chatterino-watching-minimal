@@ -2,7 +2,8 @@
   "manifest_version": 3,
 
   "name": "Chatterino Watching Minimal",
-  "version": "1.0",
+  "short_name": "Watching",
+  "version": "1.1",
   "description": "Update the /watching split on Chatterino",
   "browser_specific_settings": {
     "gecko": {
@@ -19,6 +20,9 @@
   "background": {
     "scripts": ["background.js"],
     "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Resend the Watching status to Chatterino"
   },
   "host_permissions": ["*://www.twitch.tv/*"],
   "permissions": ["nativeMessaging"]

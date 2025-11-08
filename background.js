@@ -9,12 +9,12 @@ function sendMessage (msg)
 {
   if (!sendMessage.port)
   {
-    console.log ('CONN', appName);
+    console.debug ('CONN', appName);
     sendMessage.port = browser.runtime.connectNative (appName);
     sendMessage.port.onDisconnect.addListener (disconnected);
     sendMessage.port.onMessage.addListener (logReceived);
   }
-  console.debug ('SEND', msg);
+  console.log ('SEND', msg);
   sendMessage.port.postMessage (msg);
 }
 
@@ -25,7 +25,7 @@ function disconnected (port)
   if (err)
     console.warn ('END', err);
   else
-    console.log ('END');
+    console.debug ('END');
 }
 
 function logReceived (data)
@@ -72,10 +72,12 @@ function getLoginFromUrl (url)
   return path[1];
 }
 
-function activeTwitchTab (url)
+function activeTwitchTab (url, force = false)
 {
+  if (!url)
+    return;
   const login = getLoginFromUrl (url);
-  if (!login || activeTwitchTab.login == login)
+  if (!login || !force && activeTwitchTab.login == login)
     return;
   activeTwitchTab.login = login;
   sendMessage ({
@@ -85,7 +87,7 @@ function activeTwitchTab (url)
   });
 }
 
-async function syncTwitchTabs (rmId)
+async function syncTwitchTabs (rmId, force = false)
 {
   const tabs = await browser.tabs.query ({ url: manifest.host_permissions });
   const set = new Set ();
@@ -96,7 +98,8 @@ async function syncTwitchTabs (rmId)
       if (login)
         set.add (login);
     }
-  if (syncTwitchTabs.set.size == set.size &&
+  if (!force &&
+      syncTwitchTabs.set.size == set.size &&
       syncTwitchTabs.set.isSubsetOf (set))
     return;
   syncTwitchTabs.set = set;
@@ -107,6 +110,14 @@ async function syncTwitchTabs (rmId)
 }
 
 syncTwitchTabs.set = new Set ();
+
+function refreshState (tab)
+{
+  activeTwitchTab (tab.url, true);
+  syncTwitchTabs (null, true);
+}
+
+browser.action.onClicked.addListener (refreshState);
 
 browser.runtime.onInstalled.addListener (syncTwitchTabs);
 browser.runtime.onStartup.addListener (syncTwitchTabs);
