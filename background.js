@@ -84,10 +84,11 @@ function activeTwitchTab (url, force = false)
     action: 'select',
     type: 'twitch',
     name: login,
+    winId: 'm',
   });
 }
 
-async function syncTwitchTabs (rmId, force = false)
+async function syncTwitchTabs (rmId, removeInfo, force = false)
 {
   const tabs = await browser.tabs.query ({ url: manifest.host_permissions });
   const set = new Set ();
@@ -114,7 +115,7 @@ syncTwitchTabs.set = new Set ();
 function refreshState (tab)
 {
   activeTwitchTab (tab.url, true);
-  syncTwitchTabs (null, true);
+  syncTwitchTabs (null, null, true);
 }
 
 browser.action.onClicked.addListener (refreshState);

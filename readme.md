@@ -10,7 +10,8 @@ does it request the browser permission to read all tabs' URLs.
 Only URLs of `www.twitch.tv` tabs are visible to the extension.
 
 In order to allow this extension to communicate with the Chatterino app, add
-the extension ID in the browser integration settings.
+the extension ID `@chatterino-watching-minimal.crazysmc` in the browser
+integration settings.
 
 The last selected Twitch stream is sent as a `select` message and the set of
 all open Twitch streams is sent as a `sync` message.
